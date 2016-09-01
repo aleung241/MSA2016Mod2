@@ -1,15 +1,64 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title>User Profile</title>
-	<meta charset="utf-8"/>
+	<title>User Profile</title>
+	<meta charset="utf-8" />
 	<link rel="stylesheet" href="../stylesheets/style.css" type="text/css" />
-	<link href="../stylesheets/bootstrap.min.css" rel="stylesheet" />
-	<script src="../scripts/userSearch.js"></script>
+	<link href="../stylesheets/bootstrap.min.css" rel="stylesheet"/>
 	<script src="../scripts/jquery-3.1.0.min.js"></script>
+	<script src="../scripts/jquery-ui.min.js"></script>
+	<script src="../scripts/userSearch.js"></script>
+	<script src="../scripts/userProfile.js"></script>
 	<script src="../scripts/bootstrap.min.js"></script>
+	<link href="../stylesheets/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../stylesheets/jquery-ui.structure.min.css" rel="stylesheet" />
+	<link href="../stylesheets/jquery-ui.theme.min.css" rel="stylesheet" />
 </head>
 <body>
-
+	<div class="mainContainer">
+		<div class="row">
+			<div class="col-md-3">
+				<img id="userPageAvatarLrg" src=""/>
+			</div>
+			<div class="col-md-9">
+				<div class="row">
+					<div class="col-md-12">
+						<h2 id="userPageDisplayName"></h2>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<h4 id="userPageStatus"></h4>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<h4 id="userBanStatus"></h4>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div id="tabs">
+				<ul>
+					<li><a href="#fragment-1"><span>Bans</span></a></li>
+					<li><a href="#fragment-2"><span>DotA 2</span></a></li>
+					<li><a href="#fragment-2"><span>Other shit</span></a></li>
+					<li><a href="#fragment-2"><span>More shit</span></a></li>
+				</ul>
+				<div id="fragment-1">
+					<p id="userPageCommunityBan"></p>
+					<p id="userPageEconomyBan"></p>
+					<p id="userPageVACBanned"></p>
+					<p id="userPageVACBans"></p>
+					<p id="userPageBanDays"></p>
+					<p id="userPageGameBans"></p>
+				</div>
+				<div id="fragment-2"></div>
+				<div id="fragment-3"></div>
+				<div id="fragment-4"></div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>

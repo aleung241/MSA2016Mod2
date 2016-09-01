@@ -3,32 +3,22 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
-	<title>TypeScript HTML App</title>
+	<title>Steam User Search</title>
 	<link rel="stylesheet" href="stylesheets/style.css" type="text/css" />
 	<link href="stylesheets/bootstrap.min.css" rel="stylesheet" />
 	<link href="stylesheets/sweetalert.css" rel="stylesheet" />
-	<script src="scripts/userSearch.js"></script>
 	<script src="scripts/jquery-3.1.0.min.js"></script>
+	<script src="scripts/userSearch.js"></script>
 	<script src="scripts/bootstrap.min.js"></script>
 	<script src="scripts/sweetalert.min.js"></script>
 </head>
 <body>
-	<div id="userSearchBox">
-		<h1>Please enter Steam username:</h1>
-		<input id="userSearchInput" />
-		<button id="userSearchButton" onclick="searchPopup()">OK!</button>
-	</div>
-	<div>
-		<h2 id="errorMessage"></h2>
-		<h2 id="userPageUserName"></h2>
-		<h3 id="userPageSteamId"></h3>
-		<h3 id="userPageDisplayName"></h3>
-		<p id="userPageProfileUrlWrapper"></p>
-		<h3 id="userPageLastLogOff"></h3>
-		<h3 id="userPageStatus"></h3>
-		<img id="userPageAvatarSml" src="" />
-		<img id="userPageAvatarMed" src="" />
-		<img id="userPageAvatarLrg" src="" />
+	<div class="mainContainer">
+		<div id="userSearchBox">
+			<h1>Please enter Steam username:</h1>
+			<input id="userSearchInput" />
+			<button id="userSearchButton" onclick="searchPopup()">OK!</button>
+		</div>
 	</div>
 </body>
 </html>

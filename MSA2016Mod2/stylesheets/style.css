@@ -6,6 +6,12 @@ span {
     font-style: italic;
 }
 
+.mainContainer {
+	margin: auto;
+	margin-top: 20px;
+	max-width: 900px;
+}
+
 #userPageProfileUrl {
 	font-size: 24px;
 }

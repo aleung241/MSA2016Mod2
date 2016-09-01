@@ -26,15 +26,21 @@
     <Content Include="scripts\bootstrap.min.js" />
     <Content Include="scripts\jquery-3.1.0.min.js" />
     <Content Include="index.html" />
+    <Content Include="scripts\jquery-ui.min.js" />
     <Content Include="scripts\sweetalert.min.js" />
     <Content Include="stylesheets\bootstrap.min.css" />
+    <Content Include="stylesheets\jquery-ui.min.css" />
+    <Content Include="stylesheets\jquery-ui.structure.min.css" />
+    <Content Include="stylesheets\jquery-ui.theme.min.css" />
     <Content Include="stylesheets\style.css" />
     <Content Include="stylesheets\sweetalert.css" />
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="scripts\jquery.d.ts" />
+    <TypeScriptCompile Include="scripts\jqueryui.d.ts" />
     <TypeScriptCompile Include="scripts\sweetalert.d.ts" />
+    <TypeScriptCompile Include="scripts\userProfile.ts" />
     <TypeScriptCompile Include="scripts\userSearch.ts" />
   </ItemGroup>
   <ItemGroup>
@@ -45,6 +51,9 @@
     <None Include="web.Release.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="stylesheets\images\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>
