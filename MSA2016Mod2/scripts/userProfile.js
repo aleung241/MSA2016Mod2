@@ -77,7 +77,6 @@ function getUserSummaries() {
 }
 //This creates the user from the 2 API calls
 function createNewUser(userData) {
-    console.log(userData);
     var steamId = userData.steamid;
     var displayName = userData.personaname;
     var profileUrl = userData.profileurl;
@@ -111,8 +110,28 @@ function createNewUser(userData) {
     $("#userPageAvatarSml").attr("src", avatar32);
     $("#userPageAvatarMed").attr("src", avatar64);
     $("#userPageAvatarLrg").attr("src", avatar184);
+    loadUserSteamLevel(steamId);
     loadUserBanStatus(steamId);
+    loadUserOwnedGames(steamId);
 }
+//Get user steam level
+function loadUserSteamLevel(steamId) {
+    $.ajax({
+        url: "http://aleu241-test.apigee.net/getsteamlevel",
+        data: {
+            key: apiKey,
+            steamid: steamId
+        },
+        method: "GET"
+    })
+        .done(function (userData) {
+        $("#userSteamLevel").html("Steam level: " + userData.response.player_level);
+    })
+        .fail(function () {
+        console.log("fail");
+    });
+}
+//Get ban status of user and displays it on user page
 function loadUserBanStatus(steamId) {
     var isBanned;
     var communityBanned;
@@ -154,5 +173,69 @@ function loadUserBanStatus(steamId) {
         console.log("fail");
     });
     $("#tabs").tabs();
+}
+//Get user owned games
+function loadUserOwnedGames(steamId) {
+    $.ajax({
+        url: "http://aleu241-test.apigee.net/getownedgames",
+        data: {
+            key: apiKey,
+            steamid: steamId,
+            include_appinfo: 1,
+            include_played_free_games: 1
+        },
+        method: "GET"
+    })
+        .done(function (userData) {
+        var game = userData.response.games;
+        $("#userOwnedGamesTabTitle").html("Owned Games (" + userData.response.game_count + ")");
+        for (var i = 0; i < game.length; i++) {
+            var gameLogo = "http://media.steampowered.com/steamcommunity/public/images/apps/" + game[i].appid + "/" + game[i].img_logo_url + ".jpg";
+            var totalPlaytime = Math.floor(game[i].playtime_forever / 60) + " hours " + game[i].playtime_forever % 60 + " minutes on record";
+            if (game[i].playtime_forever === 0) {
+                totalPlaytime = "Never played";
+            }
+            var twoWeeksPlaytime = "";
+            if (typeof game[i].playtime_2weeks !== "undefined") {
+                twoWeeksPlaytime = Math.floor(game[i].playtime_2weeks / 60) + " hours " + game[i].playtime_2weeks % 60 + " minutes in the past 2 weeks";
+            }
+            //$("#userOwnedGamesTable").append(
+            //	"<tr class=\"gamesTableBorderBottom\">" +
+            //	"<td><img src=\"" + gameLogo + "\" /></td>" +
+            //	"<td class=\"bold\">" + game[i].name + "</td>" +
+            //	"<td>" + totalPlaytime + "</td>" +
+            //	"<td>" + twoWeeksPlaytime + "</td>" +
+            //	"</tr>"
+            //);
+            $("#userOwnedGamesList").append("<div class=\"row\">" +
+                "<div class=\"col-md-3\"><img src=\"" + gameLogo + "\" /></div>" +
+                "<div class=\"col-md-4 bold\">" + game[i].name + "</div>" +
+                "<div class=\"col-md-1\"></div>" +
+                "<div class=\"col-md-4\">" +
+                "<div class=\"row\">" + totalPlaytime + "</div>" +
+                "<div class=\"row\">" + twoWeeksPlaytime + "</div>" +
+                "</div></div><hr/>");
+        }
+    })
+        .fail(function () {
+        console.log("fail");
+    });
+}
+//Get user badges
+function loadUserBadges(steamId) {
+    $.ajax({
+        url: "http://aleu241-test.apigee.net/getbadges",
+        data: {
+            key: apiKey,
+            steamid: steamId
+        },
+        method: "GET"
+    })
+        .done(function (userData) {
+        console.log(userData);
+    })
+        .fail(function () {
+        console.log("fail");
+    });
 }
 //# sourceMappingURL=userProfile.js.map

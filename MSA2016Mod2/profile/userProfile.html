@@ -33,18 +33,23 @@
 				</div>
 				<div class="row">
 					<div class="col-md-12">
+						<h4 id="userSteamLevel"></h4>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
 						<h4 id="userBanStatus"></h4>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="row">
+		<div class="row tab-row">
 			<div id="tabs">
 				<ul>
 					<li><a href="#fragment-1"><span>Bans</span></a></li>
-					<li><a href="#fragment-2"><span>DotA 2</span></a></li>
+					<li><a href="#fragment-2"><span id="userOwnedGamesTabTitle"></span></a></li>
+					<li><a href="#fragment-2"><span>Badges</span></a></li>
 					<li><a href="#fragment-2"><span>Other shit</span></a></li>
-					<li><a href="#fragment-2"><span>More shit</span></a></li>
 				</ul>
 				<div id="fragment-1">
 					<p id="userPageCommunityBan"></p>
@@ -54,7 +59,10 @@
 					<p id="userPageBanDays"></p>
 					<p id="userPageGameBans"></p>
 				</div>
-				<div id="fragment-2"></div>
+				<div id="fragment-2">
+					<!--<table id="userOwnedGamesTable"></table>-->
+					<div id="userOwnedGamesList"></div>
+				</div>
 				<div id="fragment-3"></div>
 				<div id="fragment-4"></div>
 			</div>
