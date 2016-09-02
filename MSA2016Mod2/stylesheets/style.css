@@ -39,3 +39,13 @@ span {
 .bold {
 	font-weight: bold;
 }
+
+#searchBarContainer {
+	padding-left: 0;
+	padding-bottom: 25px;
+}
+
+#searchBar {
+	width: 100%;
+	text-align: inherit;
+}

@@ -192,6 +192,7 @@ function loadUserOwnedGames(steamId) {
         for (var i = 0; i < game.length; i++) {
             var gameLogo = "http://media.steampowered.com/steamcommunity/public/images/apps/" + game[i].appid + "/" + game[i].img_logo_url + ".jpg";
             var totalPlaytime = Math.floor(game[i].playtime_forever / 60) + " hours " + game[i].playtime_forever % 60 + " minutes on record";
+            var lowerCaseGameName = game[i].name.toLowerCase();
             if (game[i].playtime_forever === 0) {
                 totalPlaytime = "Never played";
             }
@@ -199,26 +200,39 @@ function loadUserOwnedGames(steamId) {
             if (typeof game[i].playtime_2weeks !== "undefined") {
                 twoWeeksPlaytime = Math.floor(game[i].playtime_2weeks / 60) + " hours " + game[i].playtime_2weeks % 60 + " minutes in the past 2 weeks";
             }
-            //$("#userOwnedGamesTable").append(
-            //	"<tr class=\"gamesTableBorderBottom\">" +
-            //	"<td><img src=\"" + gameLogo + "\" /></td>" +
-            //	"<td class=\"bold\">" + game[i].name + "</td>" +
-            //	"<td>" + totalPlaytime + "</td>" +
-            //	"<td>" + twoWeeksPlaytime + "</td>" +
-            //	"</tr>"
-            //);
-            $("#userOwnedGamesList").append("<div class=\"row\">" +
+            $("#userOwnedGamesList").append("<div class=\"row\" id=\"" + lowerCaseGameName + "\">" + "<div class=\"row\">" +
                 "<div class=\"col-md-3\"><img src=\"" + gameLogo + "\" /></div>" +
                 "<div class=\"col-md-4 bold\">" + game[i].name + "</div>" +
                 "<div class=\"col-md-1\"></div>" +
                 "<div class=\"col-md-4\">" +
                 "<div class=\"row\">" + totalPlaytime + "</div>" +
                 "<div class=\"row\">" + twoWeeksPlaytime + "</div>" +
-                "</div></div><hr/>");
+                "</div></div><div class=\"row\"><hr/></div></div>");
         }
+        startSearchFunction();
     })
         .fail(function () {
         console.log("fail");
+    });
+}
+//Starts the search function
+function startSearchFunction() {
+    $("#searchBar").button();
+    $("#searchBar").keyup(function () {
+        var searchQuery = $.trim($("#searchBar").val()).toLowerCase();
+        var obtainedDivs = $("div[id*='" + searchQuery + "']");
+        //hide everything when something typed, then start showing results
+        $("#userOwnedGamesList").children().hide();
+        //if nothing in search bar, show all
+        if (searchQuery.length < 1) {
+            $("#userOwnedGamesList").children().show();
+        }
+        for (var i = 0; i < obtainedDivs.length; i++) {
+            //console.log("obtainedDivsParent: " + obtainedDivs.parent().attr("id"));
+            if (obtainedDivs.parent().attr("id") === "userOwnedGamesList") {
+                $("div[id*=\"" + searchQuery + "\"]").show();
+            }
+        }
     });
 }
 //Get user badges
