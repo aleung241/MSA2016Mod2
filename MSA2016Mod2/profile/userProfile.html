@@ -3,16 +3,16 @@
 <head>
 	<title>User Profile</title>
 	<meta charset="utf-8" />
-	<link rel="stylesheet" href="../stylesheets/style.css" type="text/css" />
+	<link href="../stylesheets/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../stylesheets/jquery-ui.structure.min.css" rel="stylesheet" />
+	<link href="../stylesheets/jquery-ui.theme.min.css" rel="stylesheet" />
 	<link href="../stylesheets/bootstrap.min.css" rel="stylesheet"/>
+	<link rel="stylesheet" href="../stylesheets/style.css" type="text/css" />
 	<script src="../scripts/jquery-3.1.0.min.js"></script>
 	<script src="../scripts/jquery-ui.min.js"></script>
 	<script src="../scripts/userSearch.js"></script>
 	<script src="../scripts/userProfile.js"></script>
 	<script src="../scripts/bootstrap.min.js"></script>
-	<link href="../stylesheets/jquery-ui.min.css" rel="stylesheet" />
-	<link href="../stylesheets/jquery-ui.structure.min.css" rel="stylesheet" />
-	<link href="../stylesheets/jquery-ui.theme.min.css" rel="stylesheet" />
 </head>
 <body>
 	<div class="mainContainer">
@@ -46,10 +46,10 @@
 		<div class="row tab-row">
 			<div id="tabs">
 				<ul>
-					<li><a href="#fragment-1"><span>Bans</span></a></li>
 					<li><a href="#fragment-2"><span id="userOwnedGamesTabTitle"></span></a></li>
-					<li><a href="#fragment-2"><span>Badges</span></a></li>
-					<li><a href="#fragment-2"><span>Other shit</span></a></li>
+					<li><a href="#fragment-1"><span>Bans</span></a></li>
+					<li><a href="#fragment-3"><span>Tab 3</span></a></li>
+					<li><a href="#fragment-4"><span>Tab 4</span></a></li>
 				</ul>
 				<div id="fragment-1">
 					<p id="userPageCommunityBan"></p>
@@ -61,16 +61,33 @@
 				</div>
 				<div id="fragment-2">
 					<div class="row">
-						<div class="col-md-8"></div>
+						<div class="col-md-2 bold align-right">Sort By</div>
+						<div class="col-md-4">
+							<select name="sortButton" id="sortButton">
+								<optgroup label="Play Time">
+									<option value="mostPlayed">Most played</option>
+									<option value="leastPlayed">Least played</option>
+								</optgroup>
+								<optgroup label="Alphabetical Order">
+									<option value="az">A-Z</option>
+									<option value="za">Z-A</option>
+								</optgroup>
+							</select>
+						</div>
+						<div class="col-md-2"></div>
 						<div class="col-md-4" id="searchBarContainer">
-							<input class="ui-button ui-corner-all" id="searchBar" placeholder="Search for game" />
+							<input class="fullWidthButton ui-button ui-corner-all" id="searchBar" placeholder="Search for game"/>
 						</div>
 					</div>
 					<div id="userOwnedGamesList">
 					</div>
 				</div>
-				<div id="fragment-3"></div>
-				<div id="fragment-4"></div>
+				<div id="fragment-3">
+					3rd tab not implemented yet
+				</div>
+				<div id="fragment-4">
+					4th tab not implemented yet
+				</div>
 			</div>
 		</div>
 	</div>

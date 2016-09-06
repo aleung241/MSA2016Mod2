@@ -39,20 +39,14 @@ var PersonaStatus;
     PersonaStatus[PersonaStatus["Looking to trade"] = 5] = "Looking to trade";
     PersonaStatus[PersonaStatus["Looking to play"] = 6] = "Looking to play";
 })(PersonaStatus || (PersonaStatus = {}));
-//Let's create a user class...just in case we need to use it...
-var User = (function () {
-    function User(steamId, displayName, lastLogOff, profileUrl, avatar32, avatar64, avatar184, status) {
-        this.steamId = steamId;
-        this.displayName = displayName;
-        this.lastLogOff = lastLogOff;
-        this.profileUrl = profileUrl;
-        this.avatar32 = avatar32;
-        this.avatar64 = avatar64;
-        this.avatar184 = avatar184;
-        this.status = status;
-    }
-    return User;
-}());
+//enum for owned games sorting menu
+var selectedSort;
+(function (selectedSort) {
+    selectedSort[selectedSort["az"] = 0] = "az";
+    selectedSort[selectedSort["za"] = 1] = "za";
+    selectedSort[selectedSort["mostPlayed"] = 2] = "mostPlayed";
+    selectedSort[selectedSort["leastPlayed"] = 3] = "leastPlayed";
+})(selectedSort || (selectedSort = {}));
 $(document).ready(function () {
     getUserSummaries();
 });
@@ -99,8 +93,7 @@ function createNewUser(userData) {
     //Creates the string in the format of [HH:MM:SS Day Date Month Year] for "Last seen"
     var utcTime = hours + ":" + minutes.substr(-2) + ":" + seconds.substr(-2) + " " + DayOfWeek[dayOfWeek] + " " + day + " " + Month[month] + " " + year;
     var lastLogOff = utcTime;
-    //creates new user, then displays info on page
-    var user = new User(steamId, displayName, lastLogOff, profileUrl, avatar32, avatar64, avatar184, status);
+    //Sisplays info on page
     $("#userPageSteamId").html("Steam ID: " + steamId);
     $("#userPageDisplayName").html(displayName);
     $("#userPageProfileUrlWrapper").attr("value", "test");
@@ -188,32 +181,119 @@ function loadUserOwnedGames(steamId) {
     })
         .done(function (userData) {
         var game = userData.response.games;
-        $("#userOwnedGamesTabTitle").html("Owned Games (" + userData.response.game_count + ")");
+        var gameCount;
+        if (typeof (userData.response.game_count) === "undefined") {
+            gameCount = 0;
+        }
+        else {
+            gameCount = userData.response.game_count;
+        }
+        $("#userOwnedGamesTabTitle").html("Owned Games (" + gameCount + ")");
         for (var i = 0; i < game.length; i++) {
-            var gameLogo = "http://media.steampowered.com/steamcommunity/public/images/apps/" + game[i].appid + "/" + game[i].img_logo_url + ".jpg";
+            var gameLogo;
+            if (game[i].img_logo_url === "") {
+                gameLogo = "";
+            }
+            else {
+                gameLogo = "http://media.steampowered.com/steamcommunity/public/images/apps/" + game[i].appid + "/" + game[i].img_logo_url + ".jpg";
+            }
             var totalPlaytime = Math.floor(game[i].playtime_forever / 60) + " hours " + game[i].playtime_forever % 60 + " minutes on record";
             var lowerCaseGameName = game[i].name.toLowerCase();
             if (game[i].playtime_forever === 0) {
                 totalPlaytime = "Never played";
             }
             var twoWeeksPlaytime = "";
+            //only show play time within past 2 weeks if playtime_2weeks exists
             if (typeof game[i].playtime_2weeks !== "undefined") {
                 twoWeeksPlaytime = Math.floor(game[i].playtime_2weeks / 60) + " hours " + game[i].playtime_2weeks % 60 + " minutes in the past 2 weeks";
             }
-            $("#userOwnedGamesList").append("<div class=\"row\" id=\"" + lowerCaseGameName + "\">" + "<div class=\"row\">" +
-                "<div class=\"col-md-3\"><img src=\"" + gameLogo + "\" /></div>" +
-                "<div class=\"col-md-4 bold\">" + game[i].name + "</div>" +
-                "<div class=\"col-md-1\"></div>" +
-                "<div class=\"col-md-4\">" +
-                "<div class=\"row\">" + totalPlaytime + "</div>" +
-                "<div class=\"row\">" + twoWeeksPlaytime + "</div>" +
-                "</div></div><div class=\"row\"><hr/></div></div>");
+            //only create the game div if game has logo - i.e. official game, not "beta" test games that exist in the steam database
+            if (gameLogo !== "") {
+                $("#userOwnedGamesList").append("<div class=\"row\" id=\"" + lowerCaseGameName + "\" data-playtime=\"" + game[i].playtime_forever + "\">" + "<div class=\"row\">" +
+                    "<div class=\"col-md-3\"><img src=\"" + gameLogo + "\" /></div>" +
+                    "<div class=\"col-md-4 bold\">" + game[i].name + "</div>" +
+                    "<div class=\"col-md-1\"></div>" +
+                    "<div class=\"col-md-4\">" +
+                    "<div class=\"row\">" + totalPlaytime + "</div>" +
+                    "<div class=\"row\">" + twoWeeksPlaytime + "</div>" +
+                    "</div></div><div class=\"row\"><hr/></div></div>");
+            }
         }
+        sortGames();
         startSearchFunction();
     })
         .fail(function () {
         console.log("fail");
     });
+}
+//sorts the games
+function sortGames() {
+    var item;
+    //the list is sorted by game time by default
+    sortByTime();
+    //This monitors the select menu for sorting
+    $("#sortButton").selectmenu({
+        change: function (event, data) {
+            item = selectedSort[$(data.item).attr("value")];
+            console.log("item: " + item);
+            getMenuItem(item);
+        }
+    });
+    //calls each sorting algorithm depending on which menu item was selected
+    function getMenuItem(item) {
+        switch (item) {
+            case 0:
+                sortByAZ();
+                break;
+            case 1:
+                sortByZA();
+                break;
+            case 2:
+                sortByTime();
+                break;
+            case 3:
+                sortByReverseTime();
+                break;
+            default:
+                console.log("default");
+        }
+    }
+    //sort by alphabetical order, numerals first
+    function sortByAZ() {
+        var obtainedGames = $("#userOwnedGamesList").children();
+        obtainedGames.sort(function (a, b) {
+            return $(a).attr("id") > $(b).attr("id") ? 1 : ($(a).attr("id") < $(b).attr("id") ? -1 : 0);
+        });
+        //this puts the sorted array of game divs into the container div
+        $("#userOwnedGamesList").html(obtainedGames);
+    }
+    //sort by alphabetical order, numerals first
+    function sortByZA() {
+        var obtainedGames = $("#userOwnedGamesList").children();
+        obtainedGames.sort(function (a, b) {
+            return $(a).attr("id") < $(b).attr("id") ? 1 : ($(a).attr("id") > $(b).attr("id") ? -1 : 0);
+        });
+        //this puts the sorted array of game divs into the container div
+        $("#userOwnedGamesList").html(obtainedGames);
+    }
+    //sort by play time
+    function sortByTime() {
+        var obtainedGames = $("#userOwnedGamesList").children();
+        obtainedGames.sort(function (a, b) {
+            return Number($(a).attr("data-playtime")) < Number($(b).attr("data-playtime")) ? 1 : (Number($(a).attr("data-playtime")) > Number($(b).attr("data-playtime")) ? -1 : 0);
+        });
+        //this puts the sorted array of game divs into the container div
+        $("#userOwnedGamesList").html(obtainedGames);
+    }
+    //sort by reverse play time
+    function sortByReverseTime() {
+        var obtainedGames = $("#userOwnedGamesList").children();
+        obtainedGames.sort(function (a, b) {
+            return Number($(a).attr("data-playtime")) > Number($(b).attr("data-playtime")) ? 1 : Number($(a).attr("data-playtime")) < Number($(b).attr("data-playtime")) ? -1 : 0;
+        });
+        //this puts the sorted array of game divs into the container div
+        $("#userOwnedGamesList").html(obtainedGames);
+    }
 }
 //Starts the search function
 function startSearchFunction() {
@@ -228,28 +308,10 @@ function startSearchFunction() {
             $("#userOwnedGamesList").children().show();
         }
         for (var i = 0; i < obtainedDivs.length; i++) {
-            //console.log("obtainedDivsParent: " + obtainedDivs.parent().attr("id"));
-            if (obtainedDivs.parent().attr("id") === "userOwnedGamesList") {
-                $("div[id*=\"" + searchQuery + "\"]").show();
+            if ($(obtainedDivs[i]).parent().attr("id") === "userOwnedGamesList") {
+                $(obtainedDivs[i]).show();
             }
         }
-    });
-}
-//Get user badges
-function loadUserBadges(steamId) {
-    $.ajax({
-        url: "http://aleu241-test.apigee.net/getbadges",
-        data: {
-            key: apiKey,
-            steamid: steamId
-        },
-        method: "GET"
-    })
-        .done(function (userData) {
-        console.log(userData);
-    })
-        .fail(function () {
-        console.log("fail");
     });
 }
 //# sourceMappingURL=userProfile.js.map

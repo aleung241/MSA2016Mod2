@@ -45,7 +45,11 @@ span {
 	padding-bottom: 25px;
 }
 
-#searchBar {
+.fullWidthButton {
 	width: 100%;
 	text-align: inherit;
+}
+
+.align-right {
+	text-align: right;
 }
