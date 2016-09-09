@@ -1,5 +1,6 @@
 ﻿/// <reference path="jquery.d.ts" />
 /// <reference path="sweetalert.d.ts" />
+/// <reference path="es6-shim.d.ts" />
 
 var apiKey = "4C70C8C5A2D0E11AF59A9CB6BBA60653";
 

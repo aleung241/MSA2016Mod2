@@ -53,6 +53,7 @@
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="scripts\es6-shim.d.ts" />
     <TypeScriptCompile Include="scripts\jquery.d.ts" />
     <TypeScriptCompile Include="scripts\jqueryui.d.ts" />
     <TypeScriptCompile Include="scripts\sweetalert.d.ts" />
