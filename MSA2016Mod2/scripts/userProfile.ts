@@ -19,7 +19,7 @@ enum PersonaStatus {
 }
 
 //enum for owned games sorting menu
-enum selectedSort {
+enum SelectedSort {
 	"az", "za", "mostPlayed", "leastPlayed"
 }
 
@@ -49,7 +49,7 @@ function getUserSummaries() {
 		});
 }
 
-//This creates the user from the 2 API calls
+//This creates the user from the API call
 function createNewUser(userData: any) {
 
 	var steamId: string = userData.steamid;
@@ -59,7 +59,7 @@ function createNewUser(userData: any) {
 	var avatar64: string = userData.avatarmedium;
 	var avatar184: string = userData.avatarfull;
 	var statusNum: number = userData.personastate;
-	var status: string = PersonaStatus[statusNum];
+	var status = PersonaStatus[statusNum];
 
 	//Convert UNIX timestamp to UTC
 	//Change to milliseconds, from seconds
@@ -228,7 +228,7 @@ function sortGames() {
 	//This monitors the select menu for sorting
 	$("#sortButton").selectmenu({
 		change: (event, data) => {
-			item = selectedSort[$(data.item).attr("value")];
+			item = SelectedSort[$(data.item).attr("value")];
 			console.log("item: " + item);
 			getMenuItem(item);
 		}

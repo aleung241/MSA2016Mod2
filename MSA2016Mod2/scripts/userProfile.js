@@ -40,13 +40,13 @@ var PersonaStatus;
     PersonaStatus[PersonaStatus["Looking to play"] = 6] = "Looking to play";
 })(PersonaStatus || (PersonaStatus = {}));
 //enum for owned games sorting menu
-var selectedSort;
-(function (selectedSort) {
-    selectedSort[selectedSort["az"] = 0] = "az";
-    selectedSort[selectedSort["za"] = 1] = "za";
-    selectedSort[selectedSort["mostPlayed"] = 2] = "mostPlayed";
-    selectedSort[selectedSort["leastPlayed"] = 3] = "leastPlayed";
-})(selectedSort || (selectedSort = {}));
+var SelectedSort;
+(function (SelectedSort) {
+    SelectedSort[SelectedSort["az"] = 0] = "az";
+    SelectedSort[SelectedSort["za"] = 1] = "za";
+    SelectedSort[SelectedSort["mostPlayed"] = 2] = "mostPlayed";
+    SelectedSort[SelectedSort["leastPlayed"] = 3] = "leastPlayed";
+})(SelectedSort || (SelectedSort = {}));
 $(document).ready(function () {
     getUserSummaries();
 });
@@ -69,7 +69,7 @@ function getUserSummaries() {
         console.log("fail");
     });
 }
-//This creates the user from the 2 API calls
+//This creates the user from the API call
 function createNewUser(userData) {
     var steamId = userData.steamid;
     var displayName = userData.personaname;
@@ -234,7 +234,7 @@ function sortGames() {
     //This monitors the select menu for sorting
     $("#sortButton").selectmenu({
         change: function (event, data) {
-            item = selectedSort[$(data.item).attr("value")];
+            item = SelectedSort[$(data.item).attr("value")];
             console.log("item: " + item);
             getMenuItem(item);
         }
