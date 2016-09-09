@@ -3,6 +3,10 @@
 
 var apiKey = "4C70C8C5A2D0E11AF59A9CB6BBA60653";
 
+//enum for type of input
+enum searchType {
+	"fullVanityURL", "vanityId", "communityURL", "communityId"
+}
 
 function keyboardInput(event: KeyboardEvent) {
 	if ($("#userSearchInput").is(":focus")) {
@@ -29,27 +33,16 @@ function searchPopup() {
 function getUserString() {
 	var string = (<HTMLInputElement>document.getElementById("userSearchInput")).value;
 
-	//clears the user information after the search has started
-	$("#errorMessage").html("");
-	$("#userPageUserName").html("");
-	$("#userPageSteamId").html("");
-	$("#userPageDisplayName").html("");
-	$("#userPageProfileUrl").html("");
-	$("#userPageLastLogOff").html("");
-	$("#userPageStatus").html("");
-	$("#userPageAvatarSml").attr("src", "");
-	$("#userPageAvatarMed").attr("src", "");
-	$("#userPageAvatarLrg").attr("src", "");
-
-	//Displays if nothing has is in input box but a search has been requested
+	//Warning if input box is empty
 	if (string.length === 0) {
 		swal({
 			title: "Please enter a username",
 			type: "warning"
 		});
-		//$("#errorMessage").html("Please enter a username");
 		return;
 	}
+
+	getStringType(string);
 
 	//The exciting part - the very first API call!
 	$.ajax({
@@ -76,6 +69,9 @@ function getUserString() {
 		});
 }
 
+function getStringType(input: string) {
+	var string = input.
+}
 
 window.onload = () => {
 	document.addEventListener("keydown", keyboardInput);

@@ -1,7 +1,7 @@
-// Type definitions for SweetAlert 1.1.3
+// Type definitions for SweetAlert 1.0.1
 // Project: https://github.com/t4t5/sweetalert/
 // Definitions by: Markus Peloso <https://github.com/ToastHawaii/>
-// Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
+// Definitions: https://github.com/borisyankov/DefinitelyTyped
 
 declare var sweetAlert: SweetAlert.SweetAlertStatic;
 declare var swal: SweetAlert.SweetAlertStatic;
@@ -10,17 +10,19 @@ declare module "sweetalert" {
     export = swal;
 }
 
-declare namespace SweetAlert {
-    type AlertType = "warning" | "error" | "success" | "info";
-
-    type PromtType = "input" | "prompt";
-
+declare module SweetAlert {
     interface SettingsBase {
         /**
          * A description for the modal.
          * Default: null
          */
         text?: string;
+
+        /**
+         * The type of the modal. SweetAlert comes with 4 built-in types which will show a corresponding icon animation: "warning", "error", "success" and "info". You can also set it as "input" to get a prompt modal.
+         * Default: null
+         */
+        type?: string;
 
         /**
          * If set to true, the user can dismiss the modal by pressing the Escape key.
@@ -60,7 +62,7 @@ declare namespace SweetAlert {
 
         /**
          * Use this to change the background color of the "Confirm"-button (must be a HEX value).
-         * Default: "#8CD4F5"
+         * Default: "#AEDEF4"
          */
         confirmButtonColor?: string;
 
@@ -110,29 +112,7 @@ declare namespace SweetAlert {
          * If set to false, the modal's animation will be disabled. Possible animations: "slide-from-top", "slide-from-bottom", "pop" (use true instead) and "none" (use false instead).
          * Default: true
          */
-        animation?: boolean | "slide-from-top" | "slide-from-bottom" | "pop" | "none" | string;
-
-        /**
-         * Set to true to disable the buttons and show that something is loading.
-         * Default: false
-         */
-        showLoaderOnConfirm?: boolean;
-    }
-
-    interface AlertModalSettings extends SettingsBase {
-        /**
-         * The type of the modal. SweetAlert comes with 4 built-in types which will show a corresponding icon animation: "warning", "error", "success" and "info". You can also set it as "input" to get a prompt modal.
-         * Default: null
-         */
-        type?: AlertType;
-    }
-
-    interface PromtModalSettings extends SettingsBase {
-        /**
-         * The type of the modal. SweetAlert comes with 4 built-in types which will show a corresponding icon animation: "warning", "error", "success" and "info". You can also set it as "input" to get a prompt modal.
-         * Default: null
-         */
-        type?: PromtType;
+        animation?: boolean | string;
 
         /**
          * Change the type of the input field when using type: "input" (this can be useful if you want users to type in their password for example).
@@ -153,20 +133,25 @@ declare namespace SweetAlert {
         inputValue?: string;
     }
 
-    interface Settings {
+    interface Settings extends SettingsBase {
         /**
          * The title of the modal.
          */
         title: string;
     }
 
-    interface SetDefaultsSettings {
+    interface SetDefaultsSettings extends SettingsBase {
         /**
          * The title of the modal.
          * Default: null
          */
         title?: string;
     }
+
+    /**
+     * Is true or false if the user confirms or cancels the alert. Except for the type "input", then when the user confirms the alert, this variable contains the value of the input element.
+     */
+    type CallbackArgument = boolean | string;
 
     interface SweetAlertStatic {
         /**
@@ -188,24 +173,18 @@ declare namespace SweetAlert {
          * @param text A description for the modal.
          * @param type The type of the modal. SweetAlert comes with 4 built-in types which will show a corresponding icon animation: "warning", "error", "success" and "info". You can also set it as "input" to get a prompt modal.
          */
-        (title: string, text: string, type: AlertType | PromtType): void;
+        (title: string, text: string, type: string): void;
 
         /**
          * SweetAlert automatically centers itself on the page and looks great no matter if you're using a desktop computer, mobile or tablet. An awesome replacement for JavaScript's alert.
-         * @param callback The callback from the users action. The value is true or false if the user confirms or cancels the alert.
+         * @param callback The callback from the users action. The value is true or false if the user confirms or cancels the alert. Except for the type "input", then when the user confirms the alert, the argument contains the value of the input element.
          */
-        (settings: Settings & AlertModalSettings, callback?: (isConfirm: boolean) => any): void;
-
-        /**
-         * SweetAlert automatically centers itself on the page and looks great no matter if you're using a desktop computer, mobile or tablet. An awesome replacement for JavaScript's alert.
-         * @param callback The callback from the users action. When the user confirms the prompt, the argument contains the value of the input element. When the user cancels the prompt, the argument is false.
-         */
-        (settings: Settings & PromtModalSettings, callback?: (isConfirmOrInputValue: boolean | string) => any): void;
+        (settings: Settings, callback?: (isConfirmOrInputValue: CallbackArgument) => any): void;
 
         /**
          * If you end up using a lot of the same settings when calling SweetAlert, you can use setDefaults at the start of your program to set them once and for all!
          */
-        setDefaults(settings: SetDefaultsSettings & AlertModalSettings & PromtModalSettings): void;
+        setDefaults(settings: SetDefaultsSettings): void;
 
         /**
          * Close the currently open SweetAlert programmatically.
@@ -216,15 +195,5 @@ declare namespace SweetAlert {
          * Show an error message after validating the input field, if the user's data is bad.
          */
         showInputError(errorMessage: string): void;
-
-        /**
-         * Enable the user to click on the cancel and confirm buttons.
-         */
-        enableButtons(): void;
-
-        /**
-         * Disable the user to click on the cancel and confirm buttons.
-         */
-        disableButtons(): void;
     }
 }

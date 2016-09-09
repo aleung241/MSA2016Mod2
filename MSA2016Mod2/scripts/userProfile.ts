@@ -220,7 +220,7 @@ function loadUserOwnedGames(steamId: string) {
 
 //sorts the games
 function sortGames() {
-	var item: Number;
+	var item: number;
 
 	//the list is sorted by game time by default
 	sortByTime();
@@ -235,7 +235,7 @@ function sortGames() {
 	});
 
 	//calls each sorting algorithm depending on which menu item was selected
-	function getMenuItem(item: Number) {
+	function getMenuItem(item: number) {
 		switch (item) {
 			case 0:
 				sortByAZ();

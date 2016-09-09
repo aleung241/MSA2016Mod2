@@ -1,6 +1,14 @@
 /// <reference path="jquery.d.ts" />
 /// <reference path="sweetalert.d.ts" />
 var apiKey = "4C70C8C5A2D0E11AF59A9CB6BBA60653";
+//enum for type of input
+var searchType;
+(function (searchType) {
+    searchType[searchType["fullVanityURL"] = 0] = "fullVanityURL";
+    searchType[searchType["vanityId"] = 1] = "vanityId";
+    searchType[searchType["communityURL"] = 2] = "communityURL";
+    searchType[searchType["communityId"] = 3] = "communityId";
+})(searchType || (searchType = {}));
 function keyboardInput(event) {
     if ($("#userSearchInput").is(":focus")) {
         if (event.keyCode === 13) {
@@ -22,26 +30,15 @@ function searchPopup() {
 //API call to get the search's Steam ID
 function getUserString() {
     var string = document.getElementById("userSearchInput").value;
-    //clears the user information after the search has started
-    $("#errorMessage").html("");
-    $("#userPageUserName").html("");
-    $("#userPageSteamId").html("");
-    $("#userPageDisplayName").html("");
-    $("#userPageProfileUrl").html("");
-    $("#userPageLastLogOff").html("");
-    $("#userPageStatus").html("");
-    $("#userPageAvatarSml").attr("src", "");
-    $("#userPageAvatarMed").attr("src", "");
-    $("#userPageAvatarLrg").attr("src", "");
-    //Displays if nothing has is in input box but a search has been requested
+    //Warning if input box is empty
     if (string.length === 0) {
         swal({
             title: "Please enter a username",
             type: "warning"
         });
-        //$("#errorMessage").html("Please enter a username");
         return;
     }
+    getStringType(string);
     //The exciting part - the very first API call!
     $.ajax({
         url: "http://aleu241-test.apigee.net/vanityurl",
@@ -65,6 +62,10 @@ function getUserString() {
         .fail(function () {
         console.log("fail");
     });
+}
+function getStringType(input) {
+    var string = input.
+    ;
 }
 window.onload = function () {
     document.addEventListener("keydown", keyboardInput);
