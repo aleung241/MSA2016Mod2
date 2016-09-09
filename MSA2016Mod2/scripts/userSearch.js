@@ -64,8 +64,7 @@ function getUserString() {
     });
 }
 function getStringType(input) {
-    var string = input.
-    ;
+    var string;
 }
 window.onload = function () {
     document.addEventListener("keydown", keyboardInput);

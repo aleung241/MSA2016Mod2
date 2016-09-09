@@ -70,7 +70,7 @@ function getUserString() {
 }
 
 function getStringType(input: string) {
-	var string = input.
+	var string;
 }
 
 window.onload = () => {
