@@ -21,7 +21,6 @@ function searchPopup() {
 		title: "Searching for user...",
 		type: "info",
 		showConfirmButton: false,
-		showLoaderOnConfirm: true,
 		timer: 5
 	},
 		function () {
