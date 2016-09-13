@@ -4,21 +4,49 @@
 <head>
 	<meta charset="utf-8" />
 	<title>Steam User Search</title>
-	<link rel="stylesheet" href="stylesheets/style.css" type="text/css" />
+	<link href="stylesheets/jquery-ui.min.css" rel="stylesheet" />
+	<link href="stylesheets/stylish-portfolio.css" rel="stylesheet" />
 	<link href="stylesheets/bootstrap.min.css" rel="stylesheet" />
 	<link href="stylesheets/sweetalert.css" rel="stylesheet" />
+	<link rel="stylesheet" href="stylesheets/style.css" type="text/css" />
 	<script src="scripts/jquery-3.1.0.min.js"></script>
 	<script src="scripts/userSearch.js"></script>
 	<script src="scripts/bootstrap.min.js"></script>
 	<script src="scripts/sweetalert.min.js"></script>
 </head>
 <body>
-	<div class="mainContainer">
+<div class="mainContainerHome">
+	<div class="text-vertical-center">
 		<div id="userSearchBox" class="center">
-			<h1>Please enter Steam username:</h1>
-			<input id="userSearchInput" />
-			<button id="userSearchButton" onclick="searchPopup()">OK!</button>
+			<div class="row">
+				<h1 id="mainPageH1">Steam User Search</h1>
+			</div>
+			<div class="row" id="userSearchBar">
+				<div class="col-md-9 smallLeftRightPadding">
+					<input id="userSearchInput" class="ui-button ui-corner-all"/>
+				</div>
+				<div class="col-md-3 smallLeftRightPadding">
+					<button id="userSearchButton" class="ui-button ui-corner-all" onclick="searchPopup()"><b>OK!</b></button>
+				</div>
+			</div>
+			<p><b>Acceptable inputs</b></p>
+			<p>
+				<i>
+					http://steamcommunity.com/id/&lt;customURL&gt;
+					<br/>
+					http://steamcommunity.com/profiles/&lt;7656119xxxxxxxxxx&gt;
+					<br/>
+					&lt;customURL&gt;
+					<br/>
+					&lt;7656119xxxxxxxxxx&gt;
+				</i>
+			</p>
+			<hr/>
+			<p>
+				<i>http https</i> and <i>www</i> are all optional
+			</p>
 		</div>
 	</div>
+</div>
 </body>
 </html>

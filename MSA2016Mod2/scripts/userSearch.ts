@@ -1,8 +1,14 @@
 ﻿/// <reference path="jquery.d.ts" />
+/// <reference path="jqueryui.d.ts" />
 /// <reference path="sweetalert.d.ts" />
 /// <reference path="es6-shim.d.ts" />
 
-var apiKey = "4C70C8C5A2D0E11AF59A9CB6BBA60653";
+var apiKey: string = "4C70C8C5A2D0E11AF59A9CB6BBA60653";
+
+window.onload = () => {
+	document.addEventListener("keydown", keyboardInput);
+	$("#userSearchButton").button();
+}
 
 function keyboardInput(event: KeyboardEvent) {
 	if ($("#userSearchInput").is(":focus")) {
@@ -26,7 +32,7 @@ function searchPopup() {
 
 //Gets the user input and process what to do with it
 function getUserString() {
-	var string = $.trim((<HTMLInputElement>document.getElementById("userSearchInput")).value).toLowerCase();
+	const string: string = $.trim((<HTMLInputElement>document.getElementById("userSearchInput")).value).toLowerCase();
 
 	//Warning if input box is empty
 	if (string.length === 0) {
@@ -51,7 +57,7 @@ function getUserString() {
 }
 
 function getStringType(input: string) {
-	var searchQuery: string;
+	let searchQuery: string;
 	//If string is a custom URL
 	if (input.startsWith("http://steamcommunity.com/id/") || input.startsWith("https://steamcommunity.com/id/") || input.startsWith("http://www.steamcommunity.com/id/") || input.startsWith("https://www.steamcommunity.com/id/") || input.startsWith("www.steamcommunity.com/id/") || input.startsWith("steamcommunity.com/id/")) {
 		searchQuery = input.substring(input.indexOf("/id/") + 4);
@@ -93,6 +99,10 @@ function getStringType(input: string) {
 	//If string is a steamID
 	else if (input.startsWith("7656119") && input.length === 17) {
 		searchQuery = input;
+		//if steamID ends in /, remove it
+		if (searchQuery.slice(-1) === "/") {
+			searchQuery = searchQuery.substr(0, searchQuery.length - 1);
+		}
 		getSteamIdURL(searchQuery);
 	}
 	//Otherwise probably is a custom name
@@ -127,13 +137,13 @@ function getVanityURL(string: string) {
 		.done(data => {
 			if (data.response.message === "No match") {
 				swal({
-					title: "User " + string + " does not exist",
+					title: `User ${string} does not exist`,
 					type: "error"
 				});
 				(<HTMLInputElement>document.getElementById("userSearchInput")).value = "";
 				return;
 			}
-			window.location.href = "/profile/userProfile.html#" + data.response.steamid;
+			window.location.href = `/profile/userProfile.html#${data.response.steamid}`;
 		})
 		.fail(() => {
 			console.log("fail");
@@ -150,22 +160,16 @@ function getSteamIdURL(string: string) {
 		method: "GET"
 	})
 		.done(data => {
-		if (data.response.players.length <= 0) {
-			swal({
-				title: "User ID " + string + " does not exist",
-				type: "error"
-			});
-			return;
+			if (data.response.players.length <= 0) {
+				swal({
+					title: `User ID ${string} does not exist`,
+					type: "error"
+				});
+				return;
 			}
-		window.location.href = "/profile/userProfile.html#" + string;
+			window.location.href = `/profile/userProfile.html#${string}`;
 		})
 		.fail(() => {
 			console.log("fail");
 		});
 }
-
-window.onload = () => {
-	document.addEventListener("keydown", keyboardInput);
-}
-
-//TODO RESET THE SEARCH BAR AFTER FAILED SEARCH

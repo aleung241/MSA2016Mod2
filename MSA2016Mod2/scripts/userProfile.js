@@ -190,7 +190,7 @@ function loadUserOwnedGames(steamId) {
         }
         $("#userOwnedGamesTabTitle").html("Owned Games (" + gameCount + ")");
         for (var i = 0; i < game.length; i++) {
-            var gameLogo;
+            var gameLogo = void 0;
             if (game[i].img_logo_url === "") {
                 gameLogo = "";
             }
@@ -209,14 +209,7 @@ function loadUserOwnedGames(steamId) {
             }
             //only create the game div if game has logo - i.e. official game, not "beta" test games that exist in the steam database
             if (gameLogo !== "") {
-                $("#userOwnedGamesList").append("<div class=\"row\" id=\"" + lowerCaseGameName + "\" data-playtime=\"" + game[i].playtime_forever + "\">" + "<div class=\"row\">" +
-                    "<div class=\"col-md-3\"><img src=\"" + gameLogo + "\" /></div>" +
-                    "<div class=\"col-md-4 bold\">" + game[i].name + "</div>" +
-                    "<div class=\"col-md-1\"></div>" +
-                    "<div class=\"col-md-4\">" +
-                    "<div class=\"row\">" + totalPlaytime + "</div>" +
-                    "<div class=\"row\">" + twoWeeksPlaytime + "</div>" +
-                    "</div></div><div class=\"row\"><hr/></div></div>");
+                $("#userOwnedGamesList").append("<div class=\"row\" id=\"" + lowerCaseGameName + "\" data-playtime=\"" + game[i].playtime_forever + "\">\n\t\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t\t<div class=\"col-md-3\">\n\t\t\t\t\t\t\t\t\t<img src=\"" + gameLogo + "\" class=\"gameLogo\" /></div>\n\t\t\t\t\t\t\t\t<div class=\"col-md-4 bold\">" + game[i].name + "</div>\n\t\t\t\t\t\t\t\t<div class=\"col-md-1\"></div>\n\t\t\t\t\t\t\t\t<div class=\"col-md-4\">\n\t\t\t\t\t\t\t\t\t<div class=\"row inheritPadding\">" + totalPlaytime + "</div>\n\t\t\t\t\t\t\t\t\t<div class=\"row inheritPadding\">" + twoWeeksPlaytime + "</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t<div class=\"row\"><hr/></div>\n\t\t\t\t\t\t</div>");
             }
         }
         sortGames();
@@ -228,14 +221,12 @@ function loadUserOwnedGames(steamId) {
 }
 //sorts the games
 function sortGames() {
-    var item;
     //the list is sorted by game time by default
     sortByTime();
     //This monitors the select menu for sorting
     $("#sortButton").selectmenu({
         change: function (event, data) {
-            item = SelectedSort[$(data.item).attr("value")];
-            console.log("item: " + item);
+            var item = SelectedSort[$(data.item).attr("value")];
             getMenuItem(item);
         }
     });

@@ -6,10 +6,36 @@ span {
     font-style: italic;
 }
 
-.mainContainer {
+.mainContainer, .mainContainerHome {
+	display: table;
+	height: 100%;
 	margin: auto;
-	margin-top: 20px;
 	max-width: 1080px;
+	padding: 1.5em;
+}
+
+#mainPageH1 {
+	padding-bottom: 20px;
+}
+
+#userSearchInput, #userSearchButton {
+	width: 100%;
+	height: 50px;
+	font-size: 1.5em;
+}
+
+.smallLeftRightPadding {
+	padding-left: 2px;
+	padding-right: 2px;
+}
+
+.gameLogo {
+	width: 100%;
+	max-width: 184px;
+}
+
+#userSearchBar {
+	padding-bottom: 20px;
 }
 
 #userPageProfileUrl {
@@ -24,6 +50,10 @@ span {
 
 .tab-row {
 	margin-top: 20px;
+}
+
+.inheritPadding {
+	padding: inherit;
 }
 
 #userOwnedGamesTable {
@@ -41,7 +71,6 @@ span {
 }
 
 #searchBarContainer {
-	padding-left: 0;
 	padding-bottom: 25px;
 }
 
@@ -50,8 +79,19 @@ span {
 	text-align: inherit;
 }
 
-.align-right {
-	text-align: right;
+@media(max-width: 992px) {
+	#sortText {
+		text-align: left;
+	}
+}
+
+@media(min-width: 992px) {
+	#sortText {
+		text-align: right;
+	}
+	.mainContainer {
+		min-width: 1054px;
+	}
 }
 
 .center {

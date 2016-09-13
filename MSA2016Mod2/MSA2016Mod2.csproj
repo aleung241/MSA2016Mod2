@@ -49,6 +49,7 @@
     <Content Include="stylesheets\jquery-ui.structure.min.css" />
     <Content Include="stylesheets\jquery-ui.theme.min.css" />
     <Content Include="stylesheets\style.css" />
+    <Content Include="stylesheets\stylish-portfolio.css" />
     <Content Include="stylesheets\sweetalert.css" />
     <Content Include="web.config" />
   </ItemGroup>

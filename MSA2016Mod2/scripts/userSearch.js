@@ -1,7 +1,12 @@
 /// <reference path="jquery.d.ts" />
+/// <reference path="jqueryui.d.ts" />
 /// <reference path="sweetalert.d.ts" />
 /// <reference path="es6-shim.d.ts" />
 var apiKey = "4C70C8C5A2D0E11AF59A9CB6BBA60653";
+window.onload = function () {
+    document.addEventListener("keydown", keyboardInput);
+    $("#userSearchButton").button();
+};
 function keyboardInput(event) {
     if ($("#userSearchInput").is(":focus")) {
         if (event.keyCode === 13) {
@@ -79,6 +84,10 @@ function getStringType(input) {
     }
     else if (input.startsWith("7656119") && input.length === 17) {
         searchQuery = input;
+        //if steamID ends in /, remove it
+        if (searchQuery.slice(-1) === "/") {
+            searchQuery = searchQuery.substr(0, searchQuery.length - 1);
+        }
         getSteamIdURL(searchQuery);
     }
     else {
@@ -145,8 +154,4 @@ function getSteamIdURL(string) {
         console.log("fail");
     });
 }
-window.onload = function () {
-    document.addEventListener("keydown", keyboardInput);
-};
-//TODO RESET THE SEARCH BAR AFTER FAILED SEARCH 
 //# sourceMappingURL=userSearch.js.map

@@ -1,7 +1,7 @@
 ﻿/// <reference path="jquery.d.ts" />
 /// <reference path="jqueryui.d.ts"/>
 
-var apiKey = "4C70C8C5A2D0E11AF59A9CB6BBA60653";
+var apiKey: string = "4C70C8C5A2D0E11AF59A9CB6BBA60653";
 
 //This is for date.getUTCDay()'s returned number
 enum DayOfWeek {
@@ -31,7 +31,7 @@ $(document).ready(() => {
 //Using the Steam ID, we can now call another API to grab the profile data it is associated with :D
 function getUserSummaries() {
 	//gets the steamid from url hash
-	var steamId: string = window.location.hash.substr(1);
+	const steamId: string = window.location.hash.substr(1);
 
 	$.ajax({
 		url: "http://aleu241-test.apigee.net/getplayersummaries",
@@ -52,38 +52,38 @@ function getUserSummaries() {
 //This creates the user from the API call
 function createNewUser(userData: any) {
 
-	var steamId: string = userData.steamid;
-	var displayName: string = userData.personaname;
-	var profileUrl: string = userData.profileurl;
-	var avatar32: string = userData.avatar;
-	var avatar64: string = userData.avatarmedium;
-	var avatar184: string = userData.avatarfull;
-	var statusNum: number = userData.personastate;
-	var status = PersonaStatus[statusNum];
+	const steamId: string = userData.steamid;
+	const displayName: string = userData.personaname;
+	const profileUrl: string = userData.profileurl;
+	const avatar32: string = userData.avatar;
+	const avatar64: string = userData.avatarmedium;
+	const avatar184: string = userData.avatarfull;
+	const statusNum: number = userData.personastate;
+	const status = PersonaStatus[statusNum];
 
 	//Convert UNIX timestamp to UTC
 	//Change to milliseconds, from seconds
-	var date = new Date(userData.lastlogoff * 1000);
+	const date = new Date(userData.lastlogoff * 1000);
 	//0 just in case single digit. substr -2 to get last 2 digits
-	var hours = "0" + date.getUTCHours();
-	var minutes = "0" + date.getUTCMinutes();
-	var seconds = "0" + date.getUTCSeconds();
-	var day = date.getUTCDate();
-	var month = date.getUTCMonth();
-	var year = date.getUTCFullYear();
-	var dayOfWeek = date.getUTCDay();
+	const hours: string = `0${date.getUTCHours()}`;
+	const minutes: string = `0${date.getUTCMinutes()}`;
+	const seconds: string = `0${date.getUTCSeconds()}`;
+	const day: number = date.getUTCDate();
+	const month: number = date.getUTCMonth();
+	const year: number = date.getUTCFullYear();
+	const dayOfWeek: number = date.getUTCDay();
 
 	//Creates the string in the format of [HH:MM:SS Day Date Month Year] for "Last seen"
-	var utcTime = hours + ":" + minutes.substr(-2) + ":" + seconds.substr(-2) + " " + DayOfWeek[dayOfWeek] + " " + day + " " + Month[month] + " " + year;
-	var lastLogOff = utcTime;
+	const utcTime: string = hours + ":" + minutes.substr(-2) + ":" + seconds.substr(-2) + " " + DayOfWeek[dayOfWeek] + " " + day + " " + Month[month] + " " + year;
+	const lastLogOff: string = utcTime;
 
 	//Sisplays info on page
-	$("#userPageSteamId").html("Steam ID: " + steamId);
+	$("#userPageSteamId").html(`Steam ID: ${steamId}`);
 	$("#userPageDisplayName").html(displayName);
 	$("#userPageProfileUrlWrapper").attr("value", "test");
 	$("#userPageProfileUrl").attr("href", profileUrl);
-	$("#userPageLastLogOff").html("Last seen: " + lastLogOff);
-	$("#userPageStatus").html("Currently " + status);
+	$("#userPageLastLogOff").html(`Last seen: ${lastLogOff}`);
+	$("#userPageStatus").html(`Currently ${status}`);
 	$("#userPageAvatarSml").attr("src", avatar32);
 	$("#userPageAvatarMed").attr("src", avatar64);
 	$("#userPageAvatarLrg").attr("src", avatar184);
@@ -105,7 +105,7 @@ function loadUserSteamLevel(steamId: string) {
 		method: "GET"
 	})
 		.done(userData => {
-			$("#userSteamLevel").html("Steam level: " + userData.response.player_level);
+			$("#userSteamLevel").html(`Steam level: ${userData.response.player_level}`);
 		})
 		.fail(() => {
 			console.log("fail");
@@ -114,13 +114,13 @@ function loadUserSteamLevel(steamId: string) {
 
 //Get ban status of user and displays it on user page
 function loadUserBanStatus(steamId: string) {
-	var isBanned: boolean;
-	var communityBanned: boolean;
-	var lastBanned: number;
-	var economyBan: string;
-	var vacBanned: boolean;
-	var gameBans: number;
-	var vacBans: number;
+	let isBanned: boolean;
+	let communityBanned: boolean;
+	let lastBanned: number;
+	let economyBan: string;
+	let vacBanned: boolean;
+	let gameBans: number;
+	let vacBans: number;
 
 	$.ajax({
 		url: "http://aleu241-test.apigee.net/getplayerbans",
@@ -145,11 +145,11 @@ function loadUserBanStatus(steamId: string) {
 			} else {
 				$("#userBanStatus").html("Ban Status: All clear");
 			}
-			$("#userPageCommunityBan").html("Community Banned: " + communityBanned);
-			$("#userPageEconomyBan").html("Economy Ban: " + economyBan);
-			$("#userPageVACBanned").html("VAC Banned: " + vacBanned);
-			$("#userPageVACBans").html("Number of VAC Bans on record: " + vacBans);
-			$("#userPageGameBans").html("Number of bans in games: " + gameBans);
+			$("#userPageCommunityBan").html(`Community Banned: ${communityBanned}`);
+			$("#userPageEconomyBan").html(`Economy Ban: ${economyBan}`);
+			$("#userPageVACBanned").html(`VAC Banned: ${vacBanned}`);
+			$("#userPageVACBans").html(`Number of VAC Bans on record: ${vacBans}`);
+			$("#userPageGameBans").html(`Number of bans in games: ${gameBans}`);
 		})
 		.fail(() => {
 			console.log("fail");
@@ -170,27 +170,27 @@ function loadUserOwnedGames(steamId: string) {
 		method: "GET"
 	})
 		.done(userData => {
-			var game = userData.response.games;
-			var gameCount: number;
+			const game: any = userData.response.games;
+			let gameCount: number;
 			if (typeof (userData.response.game_count) === "undefined") {
 				gameCount = 0;
 			} else {
 				gameCount = userData.response.game_count;
 			}
-			$("#userOwnedGamesTabTitle").html("Owned Games (" + gameCount + ")");
-			for (var i = 0; i < game.length; i++) {
-				var gameLogo: string;
+			$("#userOwnedGamesTabTitle").html(`Owned Games (${gameCount})`);
+			for (let i = 0; i < game.length; i++) {
+				let gameLogo: string;
 				if (game[i].img_logo_url === "") {
 					gameLogo = "";
 				} else {
 					gameLogo = "http://media.steampowered.com/steamcommunity/public/images/apps/" + game[i].appid + "/" + game[i].img_logo_url + ".jpg";
 				}
-				var totalPlaytime: string = Math.floor(game[i].playtime_forever / 60) + " hours " + game[i].playtime_forever % 60 + " minutes on record";
-				var lowerCaseGameName: string = game[i].name.toLowerCase();
+				let totalPlaytime: string = Math.floor(game[i].playtime_forever / 60) + " hours " + game[i].playtime_forever % 60 + " minutes on record";
+				const lowerCaseGameName: string = game[i].name.toLowerCase();
 				if (game[i].playtime_forever === 0) {
 					totalPlaytime = "Never played";
 				}
-				var twoWeeksPlaytime: string = "";
+				let twoWeeksPlaytime: string = "";
 				//only show play time within past 2 weeks if playtime_2weeks exists
 				if (typeof game[i].playtime_2weeks !== "undefined") {
 					twoWeeksPlaytime = Math.floor(game[i].playtime_2weeks / 60) + " hours " + game[i].playtime_2weeks % 60 + " minutes in the past 2 weeks";
@@ -199,14 +199,19 @@ function loadUserOwnedGames(steamId: string) {
 				//only create the game div if game has logo - i.e. official game, not "beta" test games that exist in the steam database
 				if (gameLogo !== "") {
 					$("#userOwnedGamesList").append(
-						"<div class=\"row\" id=\"" + lowerCaseGameName + "\" data-playtime=\"" + game[i].playtime_forever + "\">" + "<div class=\"row\">" +
-						"<div class=\"col-md-3\"><img src=\"" + gameLogo + "\" /></div>" +
-						"<div class=\"col-md-4 bold\">" + game[i].name + "</div>" +
-						"<div class=\"col-md-1\"></div>" +
-						"<div class=\"col-md-4\">" +
-						"<div class=\"row\">" + totalPlaytime + "</div>" +
-						"<div class=\"row\">" + twoWeeksPlaytime + "</div>" +
-						"</div></div><div class=\"row\"><hr/></div></div>"
+						`<div class="row" id="${lowerCaseGameName}" data-playtime="${game[i].playtime_forever}">
+							<div class="row">
+								<div class="col-md-3">
+									<img src="${gameLogo}" class="gameLogo" /></div>
+								<div class="col-md-4 bold">${game[i].name}</div>
+								<div class="col-md-1"></div>
+								<div class="col-md-4">
+									<div class="row inheritPadding">${totalPlaytime}</div>
+									<div class="row inheritPadding">${twoWeeksPlaytime}</div>
+								</div>
+							</div>
+							<div class="row"><hr/></div>
+						</div>`
 					);
 				}
 			}
@@ -220,7 +225,6 @@ function loadUserOwnedGames(steamId: string) {
 
 //sorts the games
 function sortGames() {
-	var item: number;
 
 	//the list is sorted by game time by default
 	sortByTime();
@@ -228,8 +232,7 @@ function sortGames() {
 	//This monitors the select menu for sorting
 	$("#sortButton").selectmenu({
 		change: (event, data) => {
-			item = SelectedSort[$(data.item).attr("value")];
-			console.log("item: " + item);
+			const item = SelectedSort[$(data.item).attr("value")];
 			getMenuItem(item);
 		}
 	});
@@ -257,7 +260,7 @@ function sortGames() {
 
 	//sort by alphabetical order, numerals first
 	function sortByAZ() {
-		var obtainedGames: any = $("#userOwnedGamesList").children();
+		const obtainedGames: any = $("#userOwnedGamesList").children();
 		obtainedGames.sort((a, b) => {
 			return $(a).attr("id") > $(b).attr("id") ? 1 : ($(a).attr("id") < $(b).attr("id") ? -1 : 0);
 		});
@@ -268,7 +271,7 @@ function sortGames() {
 
 	//sort by alphabetical order, numerals first
 	function sortByZA() {
-		var obtainedGames: any = $("#userOwnedGamesList").children();
+		const obtainedGames: any = $("#userOwnedGamesList").children();
 		obtainedGames.sort((a, b) => {
 			return $(a).attr("id") < $(b).attr("id") ? 1 : ($(a).attr("id") > $(b).attr("id") ? -1 : 0);
 		});
@@ -279,7 +282,7 @@ function sortGames() {
 
 	//sort by play time
 	function sortByTime() {
-		var obtainedGames: any = $("#userOwnedGamesList").children();
+		const obtainedGames: any = $("#userOwnedGamesList").children();
 		obtainedGames.sort((a: number, b: number) => {
 			return Number($(a).attr("data-playtime")) < Number($(b).attr("data-playtime")) ? 1 : (Number($(a).attr("data-playtime")) > Number($(b).attr("data-playtime")) ? -1 : 0);
 		});
@@ -290,7 +293,7 @@ function sortGames() {
 
 	//sort by reverse play time
 	function sortByReverseTime() {
-		var obtainedGames: any = $("#userOwnedGamesList").children();
+		const obtainedGames: any = $("#userOwnedGamesList").children();
 		obtainedGames.sort((a: number, b: number) => {
 			return Number($(a).attr("data-playtime")) > Number($(b).attr("data-playtime")) ? 1 : Number($(a).attr("data-playtime")) < Number($(b).attr("data-playtime")) ? -1 : 0;
 		});
@@ -304,15 +307,15 @@ function sortGames() {
 function startSearchFunction() {
 	$("#searchBar").button();
 	$("#searchBar").keyup(() => {
-		var searchQuery = $.trim($("#searchBar").val()).toLowerCase();
-		var obtainedDivs = $("div[id*='" + searchQuery + "']");
+		const searchQuery: string = $.trim($("#searchBar").val()).toLowerCase();
+		const obtainedDivs: JQuery = $(`div[id*='${searchQuery}']`);
 		//hide everything when something typed, then start showing results
 		$("#userOwnedGamesList").children().hide();
 		//if nothing in search bar, show all
 		if (searchQuery.length < 1) {
 			$("#userOwnedGamesList").children().show();
 		}
-		for (var i = 0; i < obtainedDivs.length; i++) {
+		for (let i = 0; i < obtainedDivs.length; i++) {
 			if ($(obtainedDivs[i]).parent().attr("id") === "userOwnedGamesList") {
 				$(obtainedDivs[i]).show();
 			}
