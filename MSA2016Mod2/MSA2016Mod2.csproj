@@ -29,6 +29,7 @@
     <Content Include="scripts\app.js" />
     <Content Include="scripts\app.js.map" />
     <Content Include="scripts\bootstrap.min.js" />
+    <Content Include="scripts\es6-shim.js" />
     <Content Include="scripts\jquery-3.1.0.min.js" />
     <Content Include="index.html" />
     <Content Include="scripts\jquery-ui.min.js" />
